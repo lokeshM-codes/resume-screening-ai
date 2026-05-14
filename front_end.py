@@ -1,5 +1,5 @@
 import streamlit as st
-
+from ai_features import ask_ai
 from back_end import analyze_resume
 
 
@@ -507,9 +507,6 @@ with top_right:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    if st.button("Fix Missing Keywords"):
-        st.info("The AI Features section below is ready for future OpenRouter integration.")
-
 st.markdown('</div>', unsafe_allow_html=True)
 
 
@@ -669,63 +666,71 @@ with tabs[3]:
 # AI FEATURES TAB
 # -----------------------------------
 with tabs[4]:
+
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">AI Features</div>', unsafe_allow_html=True)
+
     st.markdown(
-        '<div class="small-muted">These features can be connected later with OpenRouter AI.</div>',
+        '<div class="section-title">AI Resume Assistant</div>',
         unsafe_allow_html=True
     )
+
+    st.markdown(
+        """
+        <div class="small-muted">
+        Generate professional AI-powered resume feedback using OpenRouter.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
     st.markdown("<br>", unsafe_allow_html=True)
 
-    a1, a2 = st.columns(2)
-    a3, a4 = st.columns(2)
+    if st.button("Generate AI Suggestions"):
 
-    with a1:
-        st.markdown(
-            """
-            <div class="feature-card">
-                <div class="feature-name">Resume Enhancement</div>
-                <div class="feature-desc">Rewrite the resume in ATS-friendly language with stronger keywords and a better professional summary.</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        with st.spinner("AI is analyzing the resume..."):
 
-    with a2:
-        st.markdown(
-            """
-            <div class="feature-card">
-                <div class="feature-name">Interview Questions</div>
-                <div class="feature-desc">Generate technical and HR interview questions from the job description and resume profile.</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+            try:
 
-    with a3:
-        st.markdown(
-            """
-            <div class="feature-card">
-                <div class="feature-name">Learning Suggestions</div>
-                <div class="feature-desc">Show a learning roadmap based on the missing keywords and technologies required for the role.</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                # Reduce token usage
+                short_resume = resume_text[:1200]
+                short_job = job_text[:1200]
 
-    with a4:
-        st.markdown(
-            """
-            <div class="feature-card">
-                <div class="feature-name">ATS Optimization</div>
-                <div class="feature-desc">Highlight missing sections, weak keywords, and formatting issues that may affect selection.</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                prompt = f"""
+                Resume:
+                {short_resume}
+
+                Job Description:
+                {short_job}
+
+                Analyze the resume professionally.
+
+                Give:
+                1. ATS improvement suggestions
+                2. Missing important keywords
+                3. Resume strengths
+                4. Resume weaknesses
+                5. Interview preparation tips
+                6. Recommended projects
+                7. Career improvement suggestions
+
+                Format clearly using bullet points.
+                """
+
+                ai_response = ask_ai(prompt)
+
+                st.success("AI Analysis Complete")
+
+                st.markdown('<div class = "section-card">',unsafe_allow_html=True)
+
+                st.markdown(ai_response)
+
+                st.markdown('<div>',unsafe_allow_html=True)
+               
+            except Exception as e:
+
+                st.error(f"AI Error: {e}")
 
     st.markdown('</div>', unsafe_allow_html=True)
-
 
 # -----------------------------------
 # AI SUGGESTIONS
