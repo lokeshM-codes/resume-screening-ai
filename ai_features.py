@@ -14,22 +14,56 @@ client = OpenAI(
     base_url = "https://openrouter.ai/api/v1"
 )
 
-# ====================== ask ai function ========================
+# ====================== ask ai functions ========================
+
+def ask_ai_stream(prompt):
+    response = client.chat.completions.create(
+        model="openai/gpt-oss-120b:free",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are an expert AI resume assistant. Give professional and concise answer."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        temperature=0.5,
+        max_tokens=500,
+        stream=True
+    )
+
+    for event in response:
+        if not getattr(event, "choices", None):
+            continue
+
+        delta = event.choices[0].delta
+        if not delta:
+            continue
+
+        content = getattr(delta, "content", None)
+        if content:
+            yield content
+
 
 def ask_ai(prompt):
-    response = client.chat.completions.create(
-        model = "openai/gpt-oss-120b:free",
-        messages = [
-            {"role" : "system",
-             "content" : "You are an expert AI resume assistant.Give professional and concise answer."},
-
-             {"role" : "user",
-              "content" : prompt}
-        ],
-        temperature = 0.7,
-        max_tokens = 500
-    )
-    return response.choices[0].message.content
-
-reply = ask_ai("tell me 5 important data scientist skills")
-print(reply)
+    try:
+        return "".join(ask_ai_stream(prompt))
+    except Exception:
+        response = client.chat.completions.create(
+            model="openai/gpt-oss-120b:free",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an expert AI resume assistant. Give professional and concise answer."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.5,
+            max_tokens=700
+        )
+        return response.choices[0].message.content
