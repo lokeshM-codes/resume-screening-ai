@@ -1,133 +1,71 @@
-import re
+"""
+Main Resume Analyzer service orchestrator.
+Composes text cleaning, vocabulary matching, cosine similarity, and scoring logic.
+"""
+from typing import Dict, Any, List
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-TECHNICAL_SKILLS = [
-    "python", "java", "sql", "machine learning", "data analysis",
-    "deep learning", "html", "css", "javascript", "react",
-    "node.js", "flask", "django", "streamlit", "numpy",
-    "pandas", "mongodb", "mysql", "git", "aws",
-    "docker", "kubernetes", "api", "nlp"
-]
+from data.technical_skills import TECHNICAL_SKILLS
+from data.soft_skills import SOFT_SKILLS
+from data.education_keywords import EDUCATION_TERMS, EXPERIENCE_TERMS
+from services.text_processing import clean_text, extract_items
+from services.scoring import calculate_component_score, calculate_final_weighted_score
 
-SOFT_SKILLS = [
-    "communication",
-    "teamwork",
-    "leadership",
-    "problem solving",
-    "time management",
-    "critical thinking",
-    "adaptability",
-    "collaboration",
-    "creativity",
-    "decision making"
-]
-
-EXPERIENCE_TERMS = [
-    "internship",
-    "intern",
-    "project",
-    "projects",
-    "experience",
-    "worked",
-    "developed",
-    "built",
-    "implemented",
-    "designed",
-    "created",
-    "handled",
-    "led"
-]
-
-EDUCATION_TERMS = [
-    "b.e",
-    "be",
-    "btech",
-    "b.tech",
-    "mca",
-    "bca",
-    "degree",
-    "cgpa",
-    "gpa",
-    "university",
-    "college",
-    "school",
-    "graduated",
-    "education",
-    "diploma"
-]
-
-
-def clean_text(text):
-    text = text.lower()
-    text = re.sub(r"[^a-zA-Z0-9\s\.\+#-]", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
-
-
-def phrase_present(text, phrase):
-    pattern = r"\b" + re.escape(phrase.lower()) + r"\b"
-    return re.search(pattern, text.lower()) is not None
-
-
-def extract_items(text, item_list):
-    found = []
-    text = text.lower()
-
-    for item in item_list:
-        if phrase_present(text, item) and item not in found:
-            found.append(item)
-
-    return found
-
-
-def analyze_resume(resume_text, job_text):
+def analyze_resume(resume_text: str, job_text: str) -> Dict[str, Any]:
+    """
+    Analyze resume content against a job description.
+    Matches the exact analytical logic and output dictionary structure of legacy back_end.py.
+    """
     resume_clean = clean_text(resume_text)
     job_clean = clean_text(job_text)
 
+    # Calculate TF-IDF Cosine Similarity
     vectorizer = TfidfVectorizer()
     vectors = vectorizer.fit_transform([resume_clean, job_clean])
     text_score = cosine_similarity(vectors[0], vectors[1])[0][0]
 
-    # Technical skills
+    # Technical skills matching
     resume_skills = extract_items(resume_clean, TECHNICAL_SKILLS)
     job_skills = extract_items(job_clean, TECHNICAL_SKILLS)
     matched_skills = list(set(resume_skills) & set(job_skills))
     missing_skills = list(set(job_skills) - set(resume_skills))
 
-    # Soft skills
+    # Soft skills matching
     resume_soft_skills = extract_items(resume_clean, SOFT_SKILLS)
     job_soft_skills = extract_items(job_clean, SOFT_SKILLS)
     matched_soft_skills = list(set(resume_soft_skills) & set(job_soft_skills))
     missing_soft_skills = list(set(job_soft_skills) - set(resume_soft_skills))
 
-    # Experience
+    # Experience matching
     resume_experience = extract_items(resume_clean, EXPERIENCE_TERMS)
     job_experience = extract_items(job_clean, EXPERIENCE_TERMS)
     matched_experience = list(set(resume_experience) & set(job_experience))
     missing_experience = list(set(job_experience) - set(resume_experience))
 
-    # Education
+    # Education matching
     resume_education = extract_items(resume_clean, EDUCATION_TERMS)
     job_education = extract_items(job_clean, EDUCATION_TERMS)
     matched_education = list(set(resume_education) & set(job_education))
     missing_education = list(set(job_education) - set(resume_education))
 
-    # Scores
-    skill_score = len(matched_skills) / len(job_skills) if job_skills else 0
-    soft_skill_score = len(matched_soft_skills) / len(job_soft_skills) if job_soft_skills else 0
-    experience_score = len(matched_experience) / len(job_experience) if job_experience else 0
-    education_score = len(matched_education) / len(job_education) if job_education else 0
+    # Component ratio scores
+    skill_score = calculate_component_score(matched_skills, job_skills)
+    soft_skill_score = calculate_component_score(matched_soft_skills, job_soft_skills)
+    experience_score = calculate_component_score(matched_experience, job_experience)
+    education_score = calculate_component_score(matched_education, job_education)
 
-    final_score = (
-        0.45 * skill_score +
-        0.20 * soft_skill_score +
-        0.20 * experience_score +
-        0.10 * education_score +
-        0.05 * text_score
+    # Combined final score
+    final_score = calculate_final_weighted_score(
+        skill_score=skill_score,
+        soft_skill_score=soft_skill_score,
+        experience_score=experience_score,
+        education_score=education_score,
+        text_score=text_score
     )
 
-    suggestions = []
+    # Standard recommendations/suggestions
+    suggestions: List[str] = []
 
     if missing_skills:
         suggestions.append("Add missing technical skills: " + ", ".join(missing_skills))
