@@ -33,13 +33,13 @@ def render_upload_section() -> None:
 
         with col_a:
             with st.container(key="resume_upload_card"):
-                resume_file = st.file_uploader("📄 Upload Resume", type=["txt"])
-                st.markdown(f'<span class="upload-note">⏺ Supports .txt files up to {MAX_UPLOAD_MB}MB</span>', unsafe_allow_html=True)
+                resume_file = st.file_uploader("📄 Upload Resume", type=["txt", "pdf", "docx"])
+                st.markdown(f'<span class="upload-note">⏺ Supports .txt, .pdf, .docx files up to {MAX_UPLOAD_MB}MB</span>', unsafe_allow_html=True)
 
         with col_b:
             with st.container(key="job_upload_card"):
-                job_file = st.file_uploader("📋 Upload Job Description", type=["txt"])
-                st.markdown(f'<span class="upload-note">⏺ Supports .txt files up to {MAX_UPLOAD_MB}MB</span>', unsafe_allow_html=True)
+                job_file = st.file_uploader("📋 Upload Job Description", type=["txt", "pdf", "docx"])
+                st.markdown(f'<span class="upload-note">⏺ Supports .txt, .pdf, .docx files up to {MAX_UPLOAD_MB}MB</span>', unsafe_allow_html=True)
 
         st.markdown('<div style="margin-top: 1.75rem;"></div>', unsafe_allow_html=True)
 

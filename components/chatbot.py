@@ -30,23 +30,28 @@ def render_chatbot(resume_text: str, job_text: str) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Render previous messages
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
+    chat_container = st.container()
+
+    with chat_container:
+        for msg in st.session_state.chat_history:
+           with st.chat_message(msg["role"]):
+               st.markdown(msg["content"])
 
     # User chat input
     user_input = st.chat_input("Type your question here (e.g. 'How can I highlight my Python experience better?')")
 
     if user_input:
         # Display user message
-        with st.chat_message("user"):
-            st.markdown(user_input)
-        st.session_state.chat_history.append({"role": "user", "content": user_input})
+        with chat_container:
+            with st.chat_message("user"):
+                st.markdown(user_input)
+            st.session_state.chat_history.append({"role": "user", "content": user_input})
 
         # Generate chatbot response
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty()
-            streamed_text = ""
+        with chat_container:
+            with st.chat_message("assistant"):
+                message_placeholder = st.empty()
+                streamed_text = ""
 
             # Inject document contexts in user message prompt
             contextual_prompt = f"""
