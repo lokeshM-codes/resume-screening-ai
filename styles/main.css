@@ -635,15 +635,70 @@ h1, h2, h3, h4, h5, h6 {
     pointer-events: auto !important;
 }
 
-/* Tab labels – keep readable */
-.stTabs [data-baseweb="tab-list"] button {
-    color: #111827 !important;
-    font-weight: 700;
-    padding: 0.5rem 0.9rem;
+/* Tab labels – high contrast, crisp visibility for active & inactive tabs */
+[data-testid="stTabs"] [data-baseweb="tab-list"],
+.stTabs [data-baseweb="tab-list"] {
+    gap: 6px !important;
+    border-bottom: 2px solid #e5e7eb !important;
+    padding-bottom: 2px !important;
 }
+
+/* Inactive tabs – dark slate text, clear and bold */
+[data-testid="stTabs"] button[role="tab"],
+[data-baseweb="tab-list"] button,
+.stTabs [data-baseweb="tab"],
+[data-testid="stTabs"] button[role="tab"] p,
+[data-baseweb="tab-list"] button p,
+.stTabs [data-baseweb="tab"] p,
+[data-testid="stTabs"] button[role="tab"] span,
+[data-baseweb="tab-list"] button span,
+.stTabs [data-baseweb="tab"] span,
+[data-testid="stTabs"] button[role="tab"] div,
+[data-baseweb="tab-list"] button div,
+.stTabs [data-baseweb="tab"] div {
+    color: #374151 !important; /* High contrast dark gray/slate */
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+[data-testid="stTabs"] button[role="tab"],
+[data-baseweb="tab-list"] button,
+.stTabs [data-baseweb="tab"] {
+    padding: 0.6rem 1rem !important;
+    border-radius: 8px 8px 0 0 !important;
+    background: transparent !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Hover state for inactive tabs */
+[data-testid="stTabs"] button[role="tab"]:hover,
+[data-baseweb="tab-list"] button:hover,
+[data-testid="stTabs"] button[role="tab"]:hover *,
+[data-baseweb="tab-list"] button:hover * {
+    color: #ef4444 !important; /* Theme accent red */
+    background: rgba(239, 68, 68, 0.05) !important;
+}
+
+/* Active / Selected Tab */
+[data-testid="stTabs"] button[aria-selected="true"],
+[data-baseweb="tab-list"] button[aria-selected="true"],
+.stTabs [aria-selected="true"],
+[data-testid="stTabs"] button[aria-selected="true"] *,
+[data-baseweb="tab-list"] button[aria-selected="true"] *,
+.stTabs [aria-selected="true"] * {
+    color: #ef4444 !important;
+    font-weight: 800 !important;
+}
+
+[data-testid="stTabs"] button[aria-selected="true"],
+[data-baseweb="tab-list"] button[aria-selected="true"],
 .stTabs [aria-selected="true"] {
-    color: #111827 !important;
+    border-bottom: 3px solid #ef4444 !important;
+    background: rgba(239, 68, 68, 0.08) !important;
 }
+
 
 /* =========================================================
    PILL TAGS
