@@ -4,7 +4,7 @@ AI service interface for OpenRouter completions.
 from typing import Generator
 from openai import OpenAI
 from config.settings import (
-    OPENROUTER_API_KEY,
+    get_api_key,
     OPENROUTER_BASE_URL,
     DEFAULT_MODEL,
     DEFAULT_TEMPERATURE,
@@ -12,11 +12,15 @@ from config.settings import (
     DEFAULT_MAX_TOKENS_STATIC
 )
 
-# OpenRouter OpenAI Client initialized using centralized settings
-client = OpenAI(
-    api_key=OPENROUTER_API_KEY,
-    base_url=OPENROUTER_BASE_URL
-)
+def get_client() -> OpenAI:
+    """Instantiate and return OpenAI client dynamically."""
+    api_key = get_api_key()
+    if not api_key:
+        raise ValueError("Missing OPENROUTER_API_KEY. Please add OPENROUTER_API_KEY in Streamlit Cloud App Settings -> Secrets.")
+    return OpenAI(
+        api_key=api_key,
+        base_url=OPENROUTER_BASE_URL
+    )
 
 
 def ask_ai_stream(
@@ -26,6 +30,7 @@ def ask_ai_stream(
     """
     Query OpenRouter AI and stream back response chunks.
     """
+    client = get_client()
     response = client.chat.completions.create(
         model=DEFAULT_MODEL,
         messages=[
@@ -66,6 +71,7 @@ def ask_ai(
     try:
         return "".join(ask_ai_stream(prompt, system_instruction))
     except Exception:
+        client = get_client()
         response = client.chat.completions.create(
             model=DEFAULT_MODEL,
             messages=[
@@ -82,3 +88,4 @@ def ask_ai(
             max_tokens=DEFAULT_MAX_TOKENS_STATIC
         )
         return response.choices[0].message.content
+
