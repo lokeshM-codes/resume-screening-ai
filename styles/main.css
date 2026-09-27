@@ -637,35 +637,40 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Tab labels – high contrast, crisp visibility for active & inactive tabs */
 [data-testid="stTabs"] [data-baseweb="tab-list"],
-.stTabs [data-baseweb="tab-list"] {
+.stTabs [data-baseweb="tab-list"],
+[data-baseweb="tab-list"] {
     gap: 6px !important;
     border-bottom: 2px solid #e5e7eb !important;
     padding-bottom: 2px !important;
+    background: transparent !important;
 }
 
-/* Inactive tabs – dark slate text, clear and bold */
-[data-testid="stTabs"] button[role="tab"],
-[data-baseweb="tab-list"] button,
-.stTabs [data-baseweb="tab"],
-[data-testid="stTabs"] button[role="tab"] p,
-[data-baseweb="tab-list"] button p,
-.stTabs [data-baseweb="tab"] p,
-[data-testid="stTabs"] button[role="tab"] span,
-[data-baseweb="tab-list"] button span,
-.stTabs [data-baseweb="tab"] span,
-[data-testid="stTabs"] button[role="tab"] div,
-[data-baseweb="tab-list"] button div,
-.stTabs [data-baseweb="tab"] div {
-    color: #374151 !important; /* High contrast dark gray/slate */
+/* Inactive tabs – dark slate text, clear and bold for all browser modes */
+button[data-baseweb="tab"],
+button[role="tab"],
+div[data-baseweb="tab-list"] button,
+[data-testid="stTabs"] button,
+.stTabs button,
+[data-testid="stTab"],
+button[data-baseweb="tab"] *,
+button[role="tab"] *,
+div[data-baseweb="tab-list"] button *,
+[data-testid="stTabs"] button *,
+.stTabs button *,
+[data-testid="stTab"] * {
+    color: #1f2937 !important; /* Dark slate text for all unselected tabs */
     font-weight: 700 !important;
     font-size: 0.95rem !important;
     opacity: 1 !important;
     visibility: visible !important;
 }
 
-[data-testid="stTabs"] button[role="tab"],
-[data-baseweb="tab-list"] button,
-.stTabs [data-baseweb="tab"] {
+button[data-baseweb="tab"],
+button[role="tab"],
+div[data-baseweb="tab-list"] button,
+[data-testid="stTabs"] button,
+.stTabs button,
+[data-testid="stTab"] {
     padding: 0.6rem 1rem !important;
     border-radius: 8px 8px 0 0 !important;
     background: transparent !important;
@@ -673,28 +678,45 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Hover state for inactive tabs */
-[data-testid="stTabs"] button[role="tab"]:hover,
-[data-baseweb="tab-list"] button:hover,
-[data-testid="stTabs"] button[role="tab"]:hover *,
-[data-baseweb="tab-list"] button:hover * {
+button[data-baseweb="tab"]:hover,
+button[role="tab"]:hover,
+div[data-baseweb="tab-list"] button:hover,
+[data-testid="stTabs"] button:hover,
+.stTabs button:hover,
+[data-testid="stTab"]:hover,
+button[data-baseweb="tab"]:hover *,
+button[role="tab"]:hover *,
+div[data-baseweb="tab-list"] button:hover *,
+[data-testid="stTabs"] button:hover *,
+.stTabs button:hover *,
+[data-testid="stTab"]:hover * {
     color: #ef4444 !important; /* Theme accent red */
-    background: rgba(239, 68, 68, 0.05) !important;
+    background: rgba(239, 68, 68, 0.06) !important;
 }
 
 /* Active / Selected Tab */
+button[data-baseweb="tab"][aria-selected="true"],
+button[role="tab"][aria-selected="true"],
+div[data-baseweb="tab-list"] button[aria-selected="true"],
 [data-testid="stTabs"] button[aria-selected="true"],
-[data-baseweb="tab-list"] button[aria-selected="true"],
 .stTabs [aria-selected="true"],
+[data-testid="stTab"][aria-selected="true"],
+button[data-baseweb="tab"][aria-selected="true"] *,
+button[role="tab"][aria-selected="true"] *,
+div[data-baseweb="tab-list"] button[aria-selected="true"] *,
 [data-testid="stTabs"] button[aria-selected="true"] *,
-[data-baseweb="tab-list"] button[aria-selected="true"] *,
-.stTabs [aria-selected="true"] * {
+.stTabs [aria-selected="true"] *,
+[data-testid="stTab"][aria-selected="true"] * {
     color: #ef4444 !important;
     font-weight: 800 !important;
 }
 
+button[data-baseweb="tab"][aria-selected="true"],
+button[role="tab"][aria-selected="true"],
+div[data-baseweb="tab-list"] button[aria-selected="true"],
 [data-testid="stTabs"] button[aria-selected="true"],
-[data-baseweb="tab-list"] button[aria-selected="true"],
-.stTabs [aria-selected="true"] {
+.stTabs [aria-selected="true"],
+[data-testid="stTab"][aria-selected="true"] {
     border-bottom: 3px solid #ef4444 !important;
     background: rgba(239, 68, 68, 0.08) !important;
 }
