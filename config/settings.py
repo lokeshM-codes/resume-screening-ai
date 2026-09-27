@@ -14,7 +14,7 @@ MAX_UPLOAD_MB: int = 20
 # AI Service Settings (OpenRouter API)
 OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
 OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
-DEFAULT_MODEL: str = "openai/gpt-oss-120b:free"
+DEFAULT_MODEL: str = "openai/gpt-oss-120b"
 DEFAULT_TEMPERATURE: float = 0.4
-DEFAULT_MAX_TOKENS_STREAM: int = 500
-DEFAULT_MAX_TOKENS_STATIC: int = 700
+DEFAULT_MAX_TOKENS_STREAM: int = 3500
+DEFAULT_MAX_TOKENS_STATIC: int = 3000
