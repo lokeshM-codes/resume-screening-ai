@@ -635,46 +635,55 @@ h1, h2, h3, h4, h5, h6 {
     pointer-events: auto !important;
 }
 
-/* Tab labels – high contrast, crisp visibility for active & inactive tabs */
+/* Tab list container – clean modern segmented bar */
 [data-testid="stTabs"] [data-baseweb="tab-list"],
 .stTabs [data-baseweb="tab-list"],
 [data-baseweb="tab-list"] {
-    gap: 6px !important;
-    border-bottom: 2px solid #e5e7eb !important;
-    padding-bottom: 2px !important;
+    gap: 4px !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    padding-bottom: 4px !important;
     background: transparent !important;
+    margin-bottom: 1.25rem !important;
 }
 
-/* Inactive tabs – dark slate text, clear and bold for all browser modes */
-button[data-baseweb="tab"],
-button[role="tab"],
-div[data-baseweb="tab-list"] button,
-[data-testid="stTabs"] button,
-.stTabs button,
-[data-testid="stTab"],
-button[data-baseweb="tab"] *,
-button[role="tab"] *,
-div[data-baseweb="tab-list"] button *,
-[data-testid="stTabs"] button *,
-.stTabs button *,
-[data-testid="stTab"] * {
-    color: #1f2937 !important; /* Dark slate text for all unselected tabs */
-    font-weight: 700 !important;
-    font-size: 0.95rem !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+/* Hide red highlight line below stTabs completely */
+[data-baseweb="tab-highlight"],
+div[data-baseweb="tab-highlight"],
+[data-testid="stTabHighlight"],
+div[data-testid="stTabHighlight"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    background: transparent !important;
+    border: none !important;
 }
 
+/* Inactive tabs – clean slate text, high contrast */
 button[data-baseweb="tab"],
 button[role="tab"],
 div[data-baseweb="tab-list"] button,
 [data-testid="stTabs"] button,
 .stTabs button,
 [data-testid="stTab"] {
-    padding: 0.6rem 1rem !important;
-    border-radius: 8px 8px 0 0 !important;
+    padding: 0.55rem 1.1rem !important;
+    border-radius: 8px !important;
     background: transparent !important;
-    transition: all 0.2s ease !important;
+    border: none !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+button[data-baseweb="tab"] *,
+button[role="tab"] *,
+div[data-baseweb="tab-list"] button *,
+[data-testid="stTabs"] button *,
+.stTabs button *,
+[data-testid="stTab"] * {
+    color: #475569 !important; /* Slate dark gray */
+    font-weight: 600 !important;
+    font-size: 0.93rem !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* Hover state for inactive tabs */
@@ -690,11 +699,11 @@ div[data-baseweb="tab-list"] button:hover *,
 [data-testid="stTabs"] button:hover *,
 .stTabs button:hover *,
 [data-testid="stTab"]:hover * {
-    color: #ef4444 !important; /* Theme accent red */
-    background: rgba(239, 68, 68, 0.06) !important;
+    color: #0f172a !important;
+    background: #f1f5f9 !important;
 }
 
-/* Active / Selected Tab */
+/* Active / Selected Tab – Clean dark indicator with soft background */
 button[data-baseweb="tab"][aria-selected="true"],
 button[role="tab"][aria-selected="true"],
 div[data-baseweb="tab-list"] button[aria-selected="true"],
@@ -707,8 +716,8 @@ div[data-baseweb="tab-list"] button[aria-selected="true"] *,
 [data-testid="stTabs"] button[aria-selected="true"] *,
 .stTabs [aria-selected="true"] *,
 [data-testid="stTab"][aria-selected="true"] * {
-    color: #ef4444 !important;
-    font-weight: 800 !important;
+    color: #2563eb !important; /* Premium brand blue for active tab */
+    font-weight: 700 !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"],
@@ -717,9 +726,11 @@ div[data-baseweb="tab-list"] button[aria-selected="true"],
 [data-testid="stTabs"] button[aria-selected="true"],
 .stTabs [aria-selected="true"],
 [data-testid="stTab"][aria-selected="true"] {
-    border-bottom: 3px solid #ef4444 !important;
-    background: rgba(239, 68, 68, 0.08) !important;
+    background: #eff6ff !important;
+    border-bottom: 2px solid #2563eb !important;
 }
+
+
 
 
 /* =========================================================
@@ -776,53 +787,84 @@ div[data-baseweb="tab-list"] button[aria-selected="true"],
 }
 
 /* =========================================================
-   BUTTONS
+   BUTTONS – Clean, solid, premium SaaS buttons
    ========================================================= */
-.stButton > button {
-    border: none;
-    border-radius: 14px;
-    padding: 0.85rem 1.5rem;
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: white !important;
-    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-    box-shadow: 0 10px 24px rgba(17,24,39,0.15);
-    width: 100%;
-    max-width: 100%;
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-    position: relative;
-    overflow: hidden;
-    letter-spacing: 0.01em;
+.stButton > button,
+button[kind="primary"],
+button[kind="secondary"] {
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0.65rem 1.4rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    background: #2563eb !important; /* Clean primary brand blue */
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2) !important;
+    width: auto !important;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
 }
-.stButton > button::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+
+/* Remove all pseudo-element overlays that caused weird animations */
+.stButton > button::after,
+.stButton > button::before,
+button[kind="primary"]::after,
+button[kind="secondary"]::after {
+    display: none !important;
+    content: none !important;
 }
-.stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 32px rgba(17,24,39,0.2);
+
+.stButton > button:hover,
+.stButton > button:focus,
+.stButton > button:focus-visible,
+button[kind="primary"]:hover,
+button[kind="primary"]:focus,
+button[kind="secondary"]:hover,
+button[kind="secondary"]:focus {
+    background: #1d4ed8 !important; /* Richer hover blue */
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
 }
-.stButton > button:hover::after {
-    opacity: 1;
+
+.stButton > button:active,
+button[kind="primary"]:active,
+button[kind="secondary"]:active {
+    transform: translateY(0) !important;
+    box-shadow: none !important;
 }
-.stButton > button:active {
-    transform: translateY(0);
-    box-shadow: 0 6px 16px rgba(17,24,39,0.12);
+
+/* Clean text inside buttons with NO white box or background overlay on ANY state (default, hover, focus, active) */
+.stButton > button *,
+.stButton > button:hover *,
+.stButton > button:focus *,
+.stButton > button:active *,
+button[kind="primary"] *,
+button[kind="primary"]:hover *,
+button[kind="primary"]:focus *,
+button[kind="primary"]:active *,
+button[kind="secondary"] *,
+button[kind="secondary"]:hover *,
+button[kind="secondary"]:focus *,
+button[kind="secondary"]:active * {
+    color: #ffffff !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
-.stButton > button * {
-    position: relative;
-    z-index: 1;
-}
+
 
 /* Landing page CTA container */
 .st-key-landing_card .stButton > button {
     max-width: 360px !important;
+    width: 100% !important;
     margin: 0 auto !important;
 }
+
 
 /* =========================================================
    MARKDOWN / AI STREAMING REPORT
@@ -972,15 +1014,71 @@ div[data-testid="stVerticalBlock"] > div {
     color: #111827;
     line-height: 1.65;
 }
-.ai-stream-wrap * {
-    max-width: 100% !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
+/* =========================================================
+   TEXT INPUTS & CHAT INPUT (Modern Clean SaaS Styling)
+   ========================================================= */
+.stTextInput input,
+.stTextArea textarea,
+[data-baseweb="input"] input,
+[data-baseweb="textarea"] textarea {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    color: #0f172a !important;
+    font-size: 0.95rem !important;
+    padding: 10px 14px !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
+
+.stTextInput input:focus,
+.stTextArea textarea:focus,
+[data-baseweb="input"] input:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+    outline: none !important;
+}
+
+/* Chatbot container (stChatInput) */
+[data-testid="stChatInput"],
+.stChatInput {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    padding: 4px 8px !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+[data-testid="stChatInput"]:focus-within,
+.stChatInput:focus-within {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+[data-testid="stChatInput"] textarea,
+.stChatInput textarea {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #0f172a !important;
+    font-size: 0.95rem !important;
+    padding: 6px 10px !important;
+}
+
+[data-testid="stChatInput"] button,
+.stChatInput button {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
 
 /* =========================================================
    RESPONSIVE BREAKPOINTS
    ========================================================= */
+
 @media (max-width: 992px) {
     .top-card { padding: 22px; }
     .section-card { padding: 20px; }

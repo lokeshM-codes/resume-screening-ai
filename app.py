@@ -84,7 +84,7 @@ else:
     # AI STATIC SUGGESTIONS (Dashboard footer)
     # -----------------------------------
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="section-title">AI Suggestions</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Suggestions</div>', unsafe_allow_html=True)
 
     for suggestion in result["suggestions"]:
         st.markdown(
